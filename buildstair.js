@@ -19,13 +19,13 @@ function createStairs() {
 
 	// MATERIALS
 	var stepMaterialVertical = new THREE.MeshLambertMaterial( { 
-		color: 0xA85F35 
+		color: 0xDEB887
 	} );
 	var stepMaterialHorizontal = new THREE.MeshLambertMaterial( { 
-		color: 0xBC7349 
+		color: 0xD2B48C
 	} );
 
-	var stepWidth = 500;
+	var stepWidth = 400;
 	var stepSize = 200;
 	var stepThickness = 50;
 	// height from top of one step to bottom of next step up
@@ -41,27 +41,41 @@ function createStairs() {
 	var stepHorizontal = new THREE.CubeGeometry(stepWidth, stepThickness, horizontalStepDepth);
 	var stepMesh;
 
-	// Make and position the vertical part of the step
-	stepMesh = new THREE.Mesh( stepVertical, stepMaterialVertical );
+	var a = 0;
+	var b = 0;
+	var i = 1;
+	var k = 1;
+
+	for(var x=1;x<=6;x++)
+	{
+		stepMesh = new THREE.Mesh( stepVertical, stepMaterialVertical );
 	// The position is where the center of the block will be put.
 	// You can define position as THREE.Vector3(x, y, z) or in the following way:
-	stepMesh.position.x = 0;			// centered at origin
-	stepMesh.position.y = verticalStepHeight/2;	// half of height: put it above ground plane
-	stepMesh.position.z = 0;			// centered at origin
-	scene.add( stepMesh );
+		stepMesh.position.x = 0;			// centered at origin
+		stepMesh.position.y = a + k * verticalStepHeight/2;	// half of height: put it above ground plane
+		stepMesh.position.z = b;			// centered at origin
+		scene.add( stepMesh );
 
-	// Make and position the horizontal part
-	stepMesh = new THREE.Mesh( stepHorizontal, stepMaterialHorizontal );
-	stepMesh.position.x = 0;
-	// Push up by half of horizontal step's height, plus vertical step's height
-	stepMesh.position.y = stepThickness/2 + verticalStepHeight;
-	// Push step forward by half the depth, minus half the vertical step's thickness
-	stepMesh.position.z = horizontalStepDepth/2 - stepHalfThickness;
-	scene.add( stepMesh );
+		// Make and position the horizontal part
+		stepMesh = new THREE.Mesh( stepHorizontal, stepMaterialHorizontal );
+		stepMesh.position.x = 0;
+		// Push up by half of horizontal step's height, plus vertical step's height
+		stepMesh.position.y = a + i * stepThickness/2 + verticalStepHeight;
+		// Push step forward by half the depth, minus half the vertical step's thickness
+		stepMesh.position.z = k * horizontalStepDepth/2 - stepHalfThickness-a;
+		scene.add( stepMesh );
+
+		k = k+2;
+		a = a+50;
+		b = b+350;
+		i = i+8;
+	}
+
+	
 }
 
 function createCup() {
-	var cupMaterial = new THREE.MeshLambertMaterial( { color: 0xFDD017});
+	var cupMaterial = new THREE.MeshLambertMaterial( { color: 0xFFD700});
 	// THREE.CylinderGeometry takes (radiusTop, radiusBottom, height, segmentsRadius)
 	var cupGeo = new THREE.CylinderGeometry( 200, 50, 400, 32 );
 	var cup = new THREE.Mesh( cupGeo, cupMaterial );
@@ -87,7 +101,7 @@ function init() {
 	renderer.gammaInput = true;
 	renderer.gammaOutput = true;
 	renderer.setSize(canvasWidth, canvasHeight);
-	renderer.setClearColorHex( 0xAAAAAA, 1.0 );
+	renderer.setClearColorHex( 0xF5F5F5, 1.0 );
 
 	// CAMERA
 	camera = new THREE.PerspectiveCamera( 45, canvasRatio, 1, 40000 );
@@ -116,10 +130,10 @@ function fillScene() {
 	scene.fog = new THREE.Fog( 0x808080, 3000, 6000 );
 	// LIGHTS
 	var ambientLight = new THREE.AmbientLight( 0x222222 );
-	var light = new THREE.DirectionalLight( 0xffffff, 1.0 );
+	var light = new THREE.DirectionalLight( 0xD2B48C, 1.0 );
 	light.position.set( 200, 400, 500 );
 	
-	var light2 = new THREE.DirectionalLight( 0xffffff, 1.0 );
+	var light2 = new THREE.DirectionalLight( 0xFAEBD7, 1.0 );
 	light2.position.set( -400, 200, -300 );
 
 	scene.add(ambientLight);
